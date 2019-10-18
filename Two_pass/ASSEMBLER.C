@@ -30,11 +30,13 @@ int main(){
 			LOCCTR=start;
 		else 
 			LOCCTR=start=0;
+		fprintf(f2,"\t\t%s\t%s\t%s\n",label,opcode,operand);
+		fscanf(f1,"%s%s%s",label,opcode,operand);
 		do{
 			
 			flag=0;
 			if(strcmp(label,"**")!=0){
-				
+				LOCCTR+=3;
 				do{
 					fscanf(f4,"%s",symbol);
 					if(strcmp(label,symbol)==0)
@@ -43,18 +45,18 @@ int main(){
 						fprintf(f4,"%s\t%d\n",label,LOCCTR);
 				}while(!EOF);
 				rewind(f4);
-				LOCCTR+=3;
+				
 			}else{
 				do{
 					fscanf(f3,"%s",op);
 					if(strcmp(opcode,op)==0){
-						flag=0;
+						flag=1;
 						break;
 					}else
-						flag=1;
+						continue;
 				}while(!EOF);
 				rewind(f3);
-				if(flag==0){
+				if(flag==1){
 					if(strcmp(opcode,"WORD")==0)
 						LOCCTR+=3;
 					else if(strcmp(opcode,"BYTE")==0)
@@ -63,11 +65,13 @@ int main(){
 						LOCCTR+=3*atoi(operand);
 					else if(strcmp(opcode,"RESB")==0)
 						LOCCTR+=atoi(operand);	
-		
-				}else 
-					LOCCTR+=3;/*else
-					printf("\n\tINVALID OPCODE SPECIFIED IN PROGRAM\t\n");*/
-			}fprintf(f2,"%d\t%s\t%s\n",LOCCTR,opcode,operand);
+					else
+					{
+						printf("\n\tINVLAID OPCODE\t\n");
+					}
+				}
+					
+			}fprintf(f2,"%d\t%s\t%s\n",LOCCTR,label,opcode,operand);
 			fscanf(f1,"%s%s%s",label,opcode,operand);
 		}while(strcmp(opcode,"END")!=0);
 		
