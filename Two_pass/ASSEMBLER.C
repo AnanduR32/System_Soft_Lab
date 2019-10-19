@@ -11,7 +11,7 @@ void refresh(){
 	fclose(a);
 	fclose(b);	
 }int main(){
-	char opcode[10],label[10],operand[20],symbol[10],op[10];
+	char opcode[100],label[100],operand[200],symbol[100],op[100];
 	FILE *f1,*f2,*f3,*f4;
 	int start,LOCCTR=0,flag=0,len=0,loc=0;
 	refresh();
@@ -25,51 +25,48 @@ void refresh(){
 			loc=LOCCTR=start=atoi(operand);
 		printf("\nSTARTING ADDRESS= %d\n",start);		
 		fprintf(f2,"\t\t%s\t%s\t%s\n",label,opcode,operand);
+	
 		fscanf(f1,"%s%s%s",label,opcode,operand);
 		do{
 			
 			flag=0;
-			if(!isalpha(label[0])){
-				LOCCTR+=3;
+			if(strcmp(label,"**")!=0){
 				do{
 					fscanf(f4,"%s",symbol);
 					if(strcmp(label,symbol)==0)
 						printf("\n\tDUPLICATE KEY FOUND - PROGRAM TERMINATED\t\n");
 					else 
-						fprintf(f4,"%s\t%d\n",label,LOCCTR);
+						fprintf(f4,"%s\t%d\n",label,loc);
 				}while(!EOF);
+				if(strcmp(opcode,"WORD")==0)
+					LOCCTR+=3;
+				else if(strcmp(opcode,"BYTE")==0){
+					if(op[0]=='X'){
+						len=strlen(opcode)-2;
+						LOCCTR+=len;
+					}else
+						LOCCTR+=1;
+				}
+				else if(strcmp(opcode,"RESW")==0)
+					LOCCTR+=3*atoi(operand);
+				else if(strcmp(opcode,"RESB")==0)
+					LOCCTR+=atoi(operand);	
+				else
+					printf("\n\tINVLAID OPCODE\t%d\n",LOCCTR);
 				rewind(f4);
-				
 			}else{
 				do{
 					fscanf(f3,"%s",op);
 					if(strcmp(opcode,op)==0){
 						LOCCTR+=3;
-						flag=1;
-						continue;
+						break;
 					}
-				}while(!EOF);
+				}while(!feof(f3));
 				rewind(f3);
-				if(flag!=1){
-					if(strcmp(opcode,"WORD")==0)
-						LOCCTR+=3;
-					else if(strcmp(opcode,"BYTE")==0){
-						if(op[0]=='X'){
-							len=strlen(opcode)-2;
-							LOCCTR+=len;
-						}else
-							LOCCTR+=1;
-					}
-					else if(strcmp(opcode,"RESW")==0)
-						LOCCTR+=3*atoi(operand);
-					else if(strcmp(opcode,"RESB")==0)
-						LOCCTR+=atoi(operand);	
-					else
-						printf("\n\tINVLAID OPCODE\t%d\n",LOCCTR);
-				}
-				
-			}fprintf(f2,"%d\t%s\t%s\t%s\n",loc,label,opcode,operand);
+			}
+			fprintf(f2,"%d\t%s\t%s\t%s\n",loc,label,opcode,operand);
 			loc=LOCCTR;
+			strcpy(opcode,"");
 			fscanf(f1,"%s%s%s",label,opcode,operand);
 		}while(strcmp(opcode,"END")!=0);
 		fprintf(f2,"%d",LOCCTR);		
