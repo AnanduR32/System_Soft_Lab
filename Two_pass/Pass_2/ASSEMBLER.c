@@ -57,10 +57,10 @@ void main()
             }
         }
         fscanf(fint,"%s%s%s%s",add,label,mne,operand);
-        ftab=fopen("optab.txt","r");
+        ftab=fopen("OPTAB.txt","r");
         fseek(ftab,SEEK_SET,0);
     }
-    printf("\nE^00%s",start);
+    printf("\nE^00%s\n",start);
     fclose(fint);
     fclose(ftab);
     fclose(fsym);
