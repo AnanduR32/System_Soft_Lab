@@ -1,17 +1,15 @@
 #include<stdio.h>
-#include<conio.h>
 #include<string.h>
 #include<ctype.h>
-main()
+void main()
 {
     FILE *fint,*ftab,*flen,*fsym;
     int op1[10],txtlen,txtlen1,i,j=0,len;
     char add[5],symadd[5],op[5],start[10],temp[30],line[20],label[20],mne[10],operand[10],symtab[10],opmne[10];
-    clrscr();
-    fint=fopen("input.txt","r");
-    flen=fopen("length.txt","r");
-    ftab=fopen("optab.txt","r");
-    fsym=fopen("symbol.txt","r");
+    fint=fopen("INPUT.txt","r");
+    flen=fopen("LENGTH.txt","r");
+    ftab=fopen("OPTAB.txt","r");
+    fsym=fopen("SYMBOL.txt","r");
     fscanf(fint,"%s%s%s%s",add,label,mne,operand);
     if(strcmp(mne,"START")==0)
     {
@@ -67,6 +65,4 @@ main()
     fclose(ftab);
     fclose(fsym);
     fclose(flen);
-    fclose(fout);
-    getch();
 }
