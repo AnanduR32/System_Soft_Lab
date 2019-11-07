@@ -3,24 +3,25 @@
     #include<stdlib.h>
     void main()
     {
-      FILE *fp;
+      FILE *f1,*f2;
       int i,addr1,l,j,staddr1;
       char name[10],line[50],name1[10],addr[10],rec[10],ch,staddr[10];
       printf("enter program name:" );
       scanf("%s",name);
-      fp=fopen("2passt.txt","r");
-      fscanf(fp,"%s",line);
+      f1=fopen("INPUT.txt","r");
+      f2=fopen("OUTPUT.txt","w");
+      fscanf(f1,"%s",line);
       for(i=2,j=0;i<8,j<6;i++,j++)
        {
         name1[j]=line[i];
        }
         name1[j]='\0';
-      printf("name from object code :%s\n",name1);
+      fprintf(f2,"name from object code :%s\n",name1);
       if(strcmp(name,name1)==0)
        {
         do
         {
-        fscanf(fp,"%s",line);
+        fscanf(f1,"%s",line);
         if(line[0]=='T')
         {
         for(i=2,j=0;i<8,j<6;i++,j++)
@@ -32,7 +33,7 @@
         {
           if(line[i]!='^')
           {
-            printf("00%d \t %c%c\n", staddr1,line[i],line[i+1]);
+            fprintf(f2,"00%d \t %c%c\n", staddr1,line[i],line[i+1]);
             staddr1++;
             i=i+2;
           }
@@ -44,8 +45,8 @@
            break;
           }
     
-        }while(!feof(fp));
-      fclose(fp);
+        }while(!feof(f1));
+      fclose(f1);
         }
 
     }
