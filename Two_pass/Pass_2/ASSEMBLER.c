@@ -64,7 +64,9 @@ void main()
     }
     fprintf(f5,"\nE^00%s\n",start);
     fclose(f1);
+    fclose(f2);
     fclose(f3);
     fclose(f4);
-    fclose(f2);
+    fclose(f5);
+    
 }
